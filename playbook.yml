@@ -1,0 +1,32 @@
+---
+- name: Install Apache HTTP Server
+  hosts: httpd_group
+  become: true
+  any_errors_fatal: true
+  ignore_unreachable: true
+  tasks:
+    - name: Update package cache
+      dnf:
+        name: '*'
+        state: latest
+      become: true
+      when: ansible_distribution == 'Amazon'
+
+    - name: Install Apache HTTP Server
+      dnf:
+        name: httpd
+        state: present
+      become: true
+      when: ansible_distribution == 'Amazon'
+
+    - name: Stop Apache service
+      service:
+        name: httpd
+        state: stopped
+        enabled: true
+
+    - name: Start Apache service
+      service:
+        name: httpd
+        state: started
+        enabled: true

@@ -1,0 +1,25 @@
+---
+- name: Install Flask and Run Flask project
+
+  become: true
+  tasks:
+    - name: Install Python pip
+      command: dnf install -y python3-pip
+      become: true
+
+    - name: Install Flask
+      pip:
+        name: flask
+        state: present
+      become: true
+
+    - name: Install project requirements
+      pip:
+        requirements: /flask/flask-app/requirements.txt
+      become: true
+
+    - name: Run Flask project
+      command: python3 /flask/flask-app/app.py --port=5000
+      become: true
+      async: 0
+      poll: 0

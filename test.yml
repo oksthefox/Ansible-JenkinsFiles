@@ -1,0 +1,58 @@
+---
+- name: Install Apache HTTP Server and Flask
+  hosts: all
+  become: true
+  any_errors_fatal: true
+  tasks:
+    - name: Update package cache
+      dnf:
+        name: '*'
+        state: latest
+      become: true
+      when: ansible_distribution == 'Amazon'
+
+    - name: Install Apache HTTP Server
+      dnf:
+        name: httpd
+        state: present
+      become: true
+      when: ansible_distribution == 'Amazon'
+      ignore_errors: yes
+
+    - name: Start Apache service
+      service:
+        name: httpd
+        state: started
+        enabled: true
+      become: yes
+      ignore_errors: yes
+
+    - rescue:
+      block:
+        - Install Flask and Run Flask project
+          tasks:
+            - Install Python pip
+              command: dnf install -y python3-pip
+              become: true
+              when: ansible_distribution == 'Amazon'
+              ignore_errors: yes
+
+            - Install Flask
+              pip:
+                name: flask
+                state: present
+                become: true
+                ignore_errors: yes
+
+            - Install project requirements
+              pip:
+                requirements: /flask/flask-app/requirements.txt
+                become: true
+                ignore_errors: yes
+
+            - Run Flask project
+              command: python3 /flask/flask-app/app.py --port=5000
+              become: true
+              async: 0
+              poll: 0
+              ignore_errors: yes

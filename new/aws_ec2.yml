@@ -1,0 +1,29 @@
+plugin: amazon.aws.aws_ec2
+
+regions:
+ - eu-north-1
+
+keyed_groups:
+ - prefix: environment
+   key: tags.oks
+   separator: '_'
+
+hostnames:
+ - ip-address
+
+aws_ec2
+-
+-
+-
+
+environment_prod
+- oks
+
+environment_test
+- oks
+
+environment_testingnew
+- dan
+
+
+

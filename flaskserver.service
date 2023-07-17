@@ -1,0 +1,12 @@
+[Unit]
+Description=Flask App
+After=network.target
+
+[Service]
+User=ec2-user
+ExecStart=nohup python3 /home/ec2-user/newserver/flask-app/app.py --port=5000
+WorkingDirectory= /home/ec2-user/newserver
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
