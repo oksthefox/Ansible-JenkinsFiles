@@ -11,19 +11,4 @@ keyed_groups:
 hostnames:
  - ip-address
 
-aws_ec2
--
--
--
-
-environment_prod
-- oks
-
-environment_test
-- oks
-
-environment_testingnew
-- dan
-
-
 
